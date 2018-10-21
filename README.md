@@ -1,77 +1,77 @@
-# 喵喵机蓝牙API By ihciah
+# 蓝牙机Bluetooth API By ihciah
 
-### 依赖
+### Dependency
 
-`pybluez` 蓝牙API需要(树莓派上折腾这东西踩了挺多坑
+`pybluez` Bluetooth API needs (the Raspberry Pi toss this thing and stepped on a lot of pits
 
-`twisted, pyopenssl` 微信接口脚本需要
+`twisted, pyopenssl` WeChat interface script needs
 
-`cv2, numpy` 图像转换工具需要
+`cv2, numpy` image conversion tool needed
 
-### 建立连接
+### establish connection
 
-`BtManager()` 参数留空会搜索附近可用的喵喵机并连接
+The `BtManager()` parameter is left blank to search for available downtime and connect
 
-`BtManager("69:68:63:69:61:68")` 附加指定MAC会跳过搜索过程直接连接设备，更省时间
+`BtManager("69:68:63:69:61:68")` Additional specified MAC will skip the search process and connect directly to the device, saving time
 
-### 打印图像
+### Print image
 
-从API看该机器只能输入二值图像进行打印，所以文本转图片是在客户端完成的。
+From the API, the machine can only input binary images for printing, so the text-to-picture is done on the client side.
 
-打印的图像格式为二进制数据，每一位表示黑(1)或白(0)，每行384个点。
+The printed image format is binary data, and each bit represents black (1) or white (0) with 384 points per line.
 
 ```python
-mmj = BtManager()
+Mmj = BtManager()
 mmj.sendImageToBt(img)
-mmj.disconnect()
+Mmj.disconnect()
 ```
 
-### 其他杂项
+### Other miscellaneous
 
-`registerCrcKeyToBt(key=123456)` 更改通信CRC32 KEY(不太懂这么做是为了啥,讲道理监听到这个包就能拿到key的)
+`registerCrcKeyToBt(key=123456)` Change the communication CRC32 KEY (not very acquainted with this is to swear, it is reasonable to listen to this package to get the key)
 
-`sendPaperTypeToBt(paperType=0)` 更改纸张类型(疯狂卖纸呢)
+`sendPaperTypeToBt(paperType=0)` Change the paper type (crazy paper)
 
-`sendPowerOffTimeToBt(poweroff_time=0)` 更改自动关机时间
+`sendPowerOffTimeToBt(poweroff_time=0)` Change the automatic shutdown time
 
-`sendSelfTestToBt()` 打印自检页面
+`sendSelfTestToBt()` print self-test page
 
-`sendDensityToBt(density)` 设置打印密度
+`sendDensityToBt(density)` Set print density
 
-`sendFeedLineToBt(length)` 控制打印完后的padding
+`sendFeedLineToBt(length)` controls the padding after printing
 
-`queryBatteryStatus()` 查询剩余电量
+`queryBatteryStatus()` Query the remaining battery power
 
-`queryDensity()` 查询打印密度
+`queryDensity()` query print density
 
-`sendFeedToHeadLineToBt(length)` 不太懂和 `sendFeedLineToBt` 有什么区别，但是看起来都是在打印后调用的。
+`sendFeedToHeadLineToBt(length)` doesn't quite understand the difference with `sendFeedLineToBt`, but it seems to be called after printing.
 
-`queryPowerOffTime()` 查询自动关机时间
+`queryPowerOffTime()` Query auto shutdown time
 
-`querySNFromBt()` 查询设备SN
+`querySNFromBt()` Query device SN
 
-其实还有挺多操作的，有兴趣的看着`const.py`猜一猜好了。
+In fact, there are quite a lot of operations, interested in watching `const.py` guess guess.
 
-### 图像工具
+### Image Tools
 
-`ImageConverter.image2bmp(path)` 任意图像到可供打印的二进制数据转换
+`ImageConverter.image2bmp(path)` Any image to binary data for printing
  
-`TextConverter.text2bmp(text)` 指定文字到可供打印的二进制数据转换
+`TextConverter.text2bmp(text)` specifies the text to be converted to binary data for printing
 
-### 微信公众平台工具
+### WeChat public platform tool
 
-两个小脚本，用来实现发送图片给微信公众号后自动打印。
+Two small scripts are used to automatically print the image after sending it to the WeChat public account.
 
-`wechat.php` 用于VPS接收腾讯数据，默认只允许指定用户打印。
+`wechat.php` is used by VPS to receive Tencent data. By default, only specified users are allowed to print.
 
-`printer_server.py` 放置于树莓派等有蓝牙的靠近喵喵机的机器上运行，可以使用`tinc`等建立VPN以供VPS直接访问。
+`printer_server.py` is placed on a Bluetooth-equipped machine that is close to the downtime, such as the Raspberry Pi. You can use `tinc` to create a VPN for direct access by the VPS.
 
-### 吐槽
+### Make complaints
 
-这玩意就不能增加一个多次打印的功能吗？以较低温度多次打印再走纸，应该可以实现打印灰度图的。
+Can't this add a multi-print function? It is possible to print a grayscale image by printing multiple times at a lower temperature and then feeding the paper.
 
-逆了好久的固件也没搞出来啥东西，真是菜。希望有大佬能告诉我一点人生的经验。
+The firmware that has been reversed for a long time has not come out to pick up something. It is really a dish. I hope that I can tell me a little about my life experience.
 
-顺便丢两个芯片型号: `NUC123LD4BN0`, `STM32F071CBU6`，似乎是Cortex-M0。
+By the way, two chip models are lost: `NUC123LD4BN0`, `STM32F071CBU6`, which seems to be Cortex-M0.
 
-PS: 本代码仅供非盈利用途，如用于商业用途请另请高明。
+PS: This code is for non-profit use only. For commercial use, please also use Gaoming.
